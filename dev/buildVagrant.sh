@@ -49,7 +49,7 @@ sudo apt-get install -y lxc-docker
 
 # Build java docker container
 cd /vagrant/judge/docker/images/ubuntu-java7
-sudo docker build -t="judge/java7"
+sudo docker build -t="judge/java7" .
 
 # check your docker version
 #sudo ./docker version
