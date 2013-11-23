@@ -17,6 +17,7 @@ public class Test {
 			out.println(temp);
 			temp = in.readLine();
 		}
+		
 		in.close();
 		out.close();
 	}
