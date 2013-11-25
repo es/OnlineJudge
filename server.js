@@ -44,7 +44,7 @@ var app = express();
 
 /*app.use(orm.express(config.db, {
     define: function (db, models) {
-        db.load("./models/models.js", function (err) {
+        db.load("./models/postgre/models.js", function (err) {
             // loaded!
             globalDatabase = db;
         });
