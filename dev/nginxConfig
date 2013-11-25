@@ -1,5 +1,5 @@
 # the IP(s) on which your node server is running. I chose port 3000.
-upstream webApp {
+upstream judge {
     server 127.0.0.1:3000;
 }
 
@@ -8,7 +8,7 @@ server {
     listen 80;
     server_name localhost;
     #server_name yourdomain.com yourdomain;
-    #access_log /var/log/nginx/yourdomain.log;
+    access_log /vagrant/logs/nginx.log;
 
     # pass the request to the node.js server with the correct headers and much more can be added, see nginx config options
     location / {
@@ -17,7 +17,7 @@ server {
       proxy_set_header Host $http_host;
       proxy_set_header X-NginX-Proxy true;
 
-      proxy_pass http://webApp;
+      proxy_pass http://judge;
       proxy_redirect off;
     }
  }

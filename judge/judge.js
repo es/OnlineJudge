@@ -1,7 +1,8 @@
 var shell = ('shelljs'),
 	db = require('mongoose'),
 	Teams = db.model('Team'),
-	Lang = db.model('Lang'),
+	Langs = db.model('Lang'),
+	Problems = db.model('Problem'),
 	fs = require('fs');
 
 
@@ -11,6 +12,17 @@ var shell = ('shelljs'),
 
 	});
 };*/
+
+var probExists = function (probID, next) {
+	Problems.load(probID, function (err, problem) {
+		if (err) 
+			throw err;
+		else if (problem.length != 0)
+			next(new Error("Invalid problem ID"));
+		else
+			next(null, true);
+	});
+}
 
 var testCode = function (prob, code, lang, callback) {
 	Lang.find({"name": lang}, function (err, language) {
@@ -23,7 +35,7 @@ var testCode = function (prob, code, lang, callback) {
 }
 
 
-/*sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw test/java7 java Test
+//sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw test/java7 java Test
 
 var buildCompileCmd = function (dockerID, compileCmd, codeExtension) {
 	return "sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw " + dockerID + " " + compileCmd + " Test." + codeExtension;
@@ -31,7 +43,7 @@ var buildCompileCmd = function (dockerID, compileCmd, codeExtension) {
 
 var buildRunCmd = function (dockerID, runCmd, codeExtension) {
 	return "sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw " + dockerID + " " + runCmd + " Test." + codeExtension;
-}*/
+}
 
 /*
 Arguements: 
@@ -41,15 +53,24 @@ Arguements:
 	lang - language in which the potential solution is coded
 	callback - callback to call when finished testing code
 */
-module.exports.test = function (team, prob, code, lang, callback) {
-	if (!teamExists(team))
-		new Error ("Invalid team ID");
-	else if (!probExists(prob)) 
-		new Error("Invalid problem ID");
-	else if (langSupported(lang)) 
-		new Error("Invalid language");
-	else {
-		testCode();
+module.exports.test = function (team, prob, code, lang, next) {
+		async.waterfall([
+		    function(callback){
+		        teamExists(team, callback);
+		    },
+		    function(err, callback){
+		        if (err) throw err;
+		        probExists(prob, callback);
+		    },
+		    function(err, callback){
+		        if (err) throw err;
+		        langSupported(lang, );
+		    }
+		], function (err, result) {
+			if (err) throw err;
+			else
+				testCode(team, prob, code, lang, next);
+		});
 	}
 };
 

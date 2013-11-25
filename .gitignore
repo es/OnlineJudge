@@ -3,4 +3,5 @@
 .sass-cache/
 node_modules/
 public/lib
-.vagrant
+.vagrant/
+logs/

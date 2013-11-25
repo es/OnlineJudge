@@ -33,10 +33,6 @@ var UserSchema = new Schema({
 UserSchema.virtual('password').set(function(password) {
     this._password = password;
     this.hashed_password = this.encryptPassword(password);
-    /*this.encryptPassword(password, function (err, hashedPassword) {
-        if (err) throw err;
-        this.hashed_password = hashedPassword;
-    });*/
 }).get(function() {
     return this._password;
 });
@@ -111,13 +107,6 @@ UserSchema.methods = {
     encryptPassword: function(password) {
         if (!password) return '';
         return bcrypt.hashSync (password, bcrypt.genSaltSync(SALT_WORK_FACTOR));
-        /*bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-            if(err) throw err;
-            bcrypt.hash(password, salt, function(error, hash) {
-                if(error) throw error;
-                next(null, hash);
-            });
-        });*/
     }
 };
 

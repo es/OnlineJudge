@@ -1,0 +1,71 @@
+User (same as user plus):
+- School
+- Type [admin, student, teacher]
+
+School: 
+- Teacher
+- Teams
+- Address
+- ?
+
+Team:
+- Member 1 (model = user)
+- Member 2 (model = user)
+- Member 3 (model = user)
+- Member 4 (model = user)
+- contests (model = array of contestants with same id as team)
+
+Contestant:
+- Team (model = Team)
+- Contest (model = Contest)
+- Problem1 = {
+	attemptsLeft: {defualt: 3},
+	solved: boolean,
+	score: {defualt: 0},
+	problemID: (model = problem)
+}
+- Problem2 = {
+	attemptsLeft: {defualt: 3},
+	solved: boolean,
+	score: {defualt: 0},
+	problemID: (model = problem)
+}
+- Problem3 = {
+	attemptsLeft: {defualt: 3},
+	solved: boolean,
+	score: {defualt: 0},
+	problemID: (model = problem)
+}
+- Problem4 = {
+	attemptsLeft: {defualt: 3},
+	solved: boolean,
+	score: {defualt: 0},
+	problemID: (model = problem)
+}
+- Problem5 = {
+	attemptsLeft: {defualt: 3},
+	solved: boolean,
+	score: {defualt: 0},
+	problemID: (model = problem)
+}
+- Total Score
+
+Problem: 
+- ProblemStatemant: {binary}
+- Data Set: {file?}
+- Solution: {file?}
+- specialLanguageExceptions: (model = array of objects that describe language exceptions (i.e. extra time for python))
+- ContestAppeared: contestID
+
+Contest:
+- Start time of Contest: Date
+- End time of Contest: Date
+- Contestants: (arry of contestants with same contest id as this one)
+
+Language:
+- Language name 
+- Compiles: boolean
+- CompilesCommand: string
+- RunCommand: string 
+- Time to run: int 
+
