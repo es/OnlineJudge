@@ -1,9 +1,9 @@
 var mongoose = require('mongoose'),
     LocalStrategy = require('passport-local').Strategy,
-    TwitterStrategy = require('passport-twitter').Strategy,
+    /*TwitterStrategy = require('passport-twitter').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
-    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
+    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,*/
     User = mongoose.model('User'),
     config = require('./config');
 
@@ -49,7 +49,7 @@ module.exports = function(passport) {
         }
     ));
 
-    //Use twitter strategy
+    /*//Use twitter strategy
     passport.use(new TwitterStrategy({
             consumerKey: config.twitter.clientID,
             consumerSecret: config.twitter.clientSecret,
@@ -168,5 +168,5 @@ module.exports = function(passport) {
                 }
             });
         }
-    ));
+    ));*/
 };

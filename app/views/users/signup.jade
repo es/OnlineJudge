@@ -1,6 +1,6 @@
-extends auth
+extends ../layouts/default
 
-block auth
+block content
   form.signup.form-horizontal(action="/users", method="post")
     .control-group
       label.control-label(for='name') Full name

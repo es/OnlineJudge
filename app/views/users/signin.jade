@@ -1,6 +1,6 @@
-extends auth
+extends ../layouts/default
 
-block auth
+block content
   form.signin.form-horizontal(action="/users/session", method="post")
     p.error= message
     .control-group
