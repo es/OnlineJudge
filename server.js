@@ -42,6 +42,15 @@ require('./config/passport')(passport);
 
 var app = express();
 
+/*app.use(orm.express(config.db, {
+    define: function (db, models) {
+        db.load("./models/models.js", function (err) {
+            // loaded!
+            globalDatabase = db;
+        });
+    }
+}));*/
+
 //Start logger
 app.configure('production', function(){
   app.use(express.logger());

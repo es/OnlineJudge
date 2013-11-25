@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 var express = require('express'),
-    mongoStore = require('connect-mongo')(express),
+    redisStore = require('connect-redis')(express),
     flash = require('connect-flash'),
     helpers = require('view-helpers'),
     config = require('./config'),
@@ -49,9 +49,9 @@ module.exports = function(app, passport, db) {
         //express/mongo session storage
         app.use(express.session({
             secret: crypto.randomBytes(8).toString('hex'),
-            store: new mongoStore({
-                db: db.connection.db,
-                collection: 'sessions'
+            store: new redisStore({
+                host: 'localhost',
+                port: 6379
             })
         }));
 
