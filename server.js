@@ -3,6 +3,8 @@
  */
 var express = require('express'),
     fs = require('fs'),
+    async = require('async'),
+    orm = require('orm'),
     passport = require('passport');
 
 /**
@@ -14,58 +16,67 @@ var express = require('express'),
 //if test env, load example file
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development',
     config = require('./config/config'),
-    auth = require('./config/middlewares/authorization'),
-    mongoose = require('mongoose');
-
-//Bootstrap db connection
-var db = mongoose.connect(config.db);
-
-//Bootstrap models
-var models_path = __dirname + '/app/models';
-var walk = function(path) {
-    fs.readdirSync(path).forEach(function(file) {
-        var newPath = path + '/' + file;
-        var stat = fs.statSync(newPath);
-        if (stat.isFile()) {
-            if (/(.*)\.(js$|coffee$)/.test(file)) {
-                require(newPath);
-            }
-        } else if (stat.isDirectory()) {
-            walk(newPath);
-        }
-    });
-};
-walk(models_path);
-
-//bootstrap passport config
-require('./config/passport')(passport);
+    auth = require('./config/middlewares/authorization');
 
 var app = express();
 
-/*app.use(orm.express(config.db, {
-    define: function (db, models) {
-        db.load("./models/postgre/models.js", function (err) {
-            // loaded!
-            globalDatabase = db;
+
+//Bootstrap db connection & models
+async.waterfall([
+    function (callback) {
+        orm.connect(config.db, function (err, db) {
+           if (err) throw err;
+            callback(null, db);
         });
-    }
-}));*/
+    },
+    function (db, callback) {
+        //Load models
+        db.load("./app/models/models.js", function (err) {
+            if (err) throw err;
+            callback(null, db);
+        });
+    }, 
+    function (db, callback) {
+        var models = db.models;
+        //models.user.hasMany("articles", models.article, {reverse: "authors"});
+        models.article.hasMany("authors", models.user, {company: String}, {reverse: "articles"});
+        callback(null, db);
+    },
+    function (db, callback) {
+        // Create db tables
+        db.sync(function (err) {
+            //if (err) throw err;
+            callback(null, db);
+        });
+    }],
+    function (err, db) {
+        if (err) throw err;
+        
+        //Add models to request object
+        app.use(function (req, res, next) {
+            req.models = db.models;
+            next();
+        });
 
-//Start logger
-app.configure('production', function(){
-  app.use(express.logger());
-})
+        //bootstrap passport config
+        require('./config/passport')(passport, db.models.user);
 
-//express settings
-require('./config/express')(app, passport, db);
+        //Start logger
+        app.configure('production', function(){
+          app.use(express.logger());
+        });
 
-//Bootstrap routes
-require('./app/routes')(app, passport, auth);
+        //express settings
+        require('./config/express')(app, passport, db);
 
-//Start the app by listening on <port>
-var port = process.env.PORT || config.port;
-app.listen(port);
-console.log('Express app started on port ' + port);
+        //Bootstrap routes
+        require('./app/routes')(app, passport, auth);
+
+        //Start the app by listening on <port>
+        var port = process.env.PORT || config.port;
+        app.listen(port);
+        console.log('Express app started on port ' + port);
+    });
 
 //expose app
 exports = module.exports = app;

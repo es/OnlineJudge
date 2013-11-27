@@ -1,6 +1,21 @@
+/*
+ * This must be changed before running in production, please don't be silly <3
+ */
 {
-    "db": "mongodb://localhost/onlinejudge",
+    "db": {
+	  "database" : "dbName",
+	  "protocol" : "postgres",
+	  "host"     : "localhost",
+	  "port"     : 5432,
+	  "user"     : "user",
+	  "password" : "password",
+	  "query"    : {
+	    "pool"     : false,
+	    "debug"    : false,
+	    "strdates" : false 
+	  }
+	},
     "app": {
-        "name": "Online Judge - Production"
+        "name": "Online Judge"
     }
 }

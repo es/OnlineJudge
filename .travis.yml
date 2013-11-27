@@ -4,4 +4,7 @@ node_js:
 env:
   - NODE_ENV=travis
 services:
-  - mongodb
+  - redis-server
+
+before_script:
+  - psql -c 'create database online_judge_travis;' -U postgres

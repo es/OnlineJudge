@@ -1,5 +1,17 @@
 {
-    "db": "mongodb://localhost/onlinejudge-travis",
+    "db": {
+	  "database" : "online_judge_travis",
+	  "protocol" : "postgres",
+	  "host"     : "localhost",
+	  "port"     : 5432,
+	  "user"     : "postgres",
+	  "password" : "",
+	  "query"    : {
+	    "pool"     : false,
+	    "debug"    : false,
+	    "strdates" : false 
+	  }
+	},
     "port": 3001,
     "app": {
         "name": "Online Judge - Test on travis"

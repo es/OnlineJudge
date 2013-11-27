@@ -1,18 +1,20 @@
 
-var mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
-	_ = require('underscore');
+var _ = require('underscore');
 
 /*
 	Schema for different languages that solutions can be submitted in
 */
+module.exports = function (db, callback) {
+	db.load("./user", function (err) {
+		if (err) return callback(err);
+		var LanguageSchema = db.define("lang", {
+			name: String,
+			compiles: Boolean,
+			compilesCommand: String,
+			runCommand: String,
+			timeout: Number
+		});
 
-var LanguageSchema = new Schema({
-	name: String,
-	compiles: Boolean,
-	compilesCommand: String,
-	runCommand: String,
-	timeout: Number
-});
-
-mongoose.model('Lang', LanguageSchema);
+		return callback();
+	});
+};

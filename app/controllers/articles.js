@@ -1,16 +1,14 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-    Article = mongoose.model('Article'),
-    _ = require('underscore');
+var _ = require('underscore');
 
 
 /**
  * Find article by id
  */
 exports.article = function(req, res, next, id) {
-    Article.load(id, function(err, article) {
+    req.models.article.get(id, function(err, article) {
         if (err) return next(err);
         if (!article) return next(new Error('Failed to load article ' + id));
         req.article = article;
@@ -22,18 +20,20 @@ exports.article = function(req, res, next, id) {
  * Create a article
  */
 exports.create = function(req, res) {
-    var article = new Article(req.body);
-    article.user = req.user;
-
-    article.save(function(err) {
-        if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                article: article
+    //Totally doesn't work D:
+    req.models.article.create(req.body, function (error, article) {
+        article.addDoctors(req.user, function (err) {
+            article.save(function () {
+                if (err || error) {
+                    return res.send('users/signup', {
+                        errors: err ? err.errors : error.errors,
+                        article: article
+                    });
+                } else {
+                    res.jsonp(article);
+                }
             });
-        } else {
-            res.jsonp(article);
-        }
+        });
     });
 };
 
@@ -78,7 +78,7 @@ exports.show = function(req, res) {
  * List of Articles
  */
 exports.all = function(req, res) {
-    Article.find().sort('-created').populate('user', 'name username').exec(function(err, articles) {
+    req.models.article.find({}, 'created', function(err, articles) {
         if (err) {
             res.render('error', {
                 status: 500

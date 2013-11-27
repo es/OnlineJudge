@@ -1,100 +1,102 @@
-/**
+/*
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
+var orm = require('orm'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10,
     _ = require('underscore');
 
 
 /**
- * User Schema
- */
-var UserSchema = new Schema({
-    name: String,
-    email: String,
-    username: {
-        type: String,
-        unique: true
-    },
-    provider: String,
-    hashed_password: String
-});
-
-/**
- * Virtuals
- */
-UserSchema.virtual('password').set(function(password) {
-    this._password = password;
-    this.hashed_password = this.encryptPassword(password);
-}).get(function() {
-    return this._password;
-});
-
-/**
  * Validations
  */
+    
 var validatePresenceOf = function(value) {
     return value && value.length;
 };
 
-// the below 4 validations only apply if you are signing up traditionally
-UserSchema.path('name').validate(function(name) {
-    return name.length;
-}, 'Name cannot be blank');
-
-UserSchema.path('email').validate(function(email) {
-    return email.length;
-}, 'Email cannot be blank');
-
-UserSchema.path('username').validate(function(username) {
-    return username.length;
-}, 'Username cannot be blank');
-
-UserSchema.path('hashed_password').validate(function(hashed_password) {
-    return hashed_password.length;
-}, 'Password cannot be blank');
-
-
 /**
- * Pre-save hook
+ * User Schema
  */
-UserSchema.pre('save', function(next) {
-    if (!this.isNew) return next();
+module.exports = function (db, callback) {
+    db.load("./article", function (err) {
+        if (err) return callback(err);
+        var UserSchema = db.define("user", {
+            name: String,
+            email: String,
+            username: String,
+            provider: String,
+            password: String
+        },{ 
+            validations: {
+                name: orm.validators.notEmptyString('Name cannot be blank'),
+                email: orm.validators.notEmptyString('Email cannot be blank'),
+                username: [orm.validators.notEmptyString('Username cannot be blank'), orm.validators.unique("Username must be unique")],
+                password: orm.validators.notEmptyString('Password cannot be blank')
 
-    if (!validatePresenceOf(this.password))
-        next(new Error('Invalid password'));
-    else
-        next();
-});
+            },
 
-/**
- * Methods
- */
-UserSchema.methods = {
-    /**
-     * Authenticate - check if the passwords are the same
-     *
-     * @param {String} plainText
-     * @return {Boolean}
-     * @api public
-     */
-    authenticate: function(plainText) {
-        return bcrypt.compareSync(plainText, this.hashed_password);
-    },
+            autoFetch: true,
 
-    /**
-     * Encrypt password
-     *
-     * @param {String} password
-     * @return {String}
-     * @api public
-     */
-    encryptPassword: function(password) {
-        if (!password) return '';
-        return bcrypt.hashSync (password, bcrypt.genSaltSync(SALT_WORK_FACTOR));
-    }
+            hooks: {
+                /**
+                 * Pre-save hook
+                 */
+                beforeSave: function(next) {
+                    if (!this.isNew) return next();
+
+                    if (!validatePresenceOf(this.password))
+                        next(new Error('Invalid password'));
+                    else
+                        next();
+                },
+
+                beforeCreate: function (next) {
+                    this.password = this.encryptPassword(this.password);
+                    next();
+                }
+            },
+            
+            /**
+             * Methods
+             */    
+            methods: {
+                /**
+                 * Authenticate - check if the passwords are the same
+                 *
+                 * @param {String} plainText
+                 * @return {Boolean}
+                 * @api public
+                 */
+                authenticate: function(plainText) {
+                    return bcrypt.compareSync(plainText, this.password);
+                },
+
+                /**
+                 * Encrypt password
+                 *
+                 * @param {String} password
+                 * @return {String}
+                 * @api public
+                 */
+                encryptPassword: function(password) {
+                    if (!password) return '';
+                    return bcrypt.hashSync (password, bcrypt.genSaltSync(SALT_WORK_FACTOR));
+                }
+            }
+        });
+        return callback();
+    });
 };
 
-mongoose.model('User', UserSchema);
+/**
+         * Virtuals
+         */
+        /*UserSchema.virtual('password').set(function(password) {
+            this._password = password;
+            this.hashed_password = this.encryptPassword(password);
+        }).get(function() {
+            return this._password;
+        });*/
+
+        

@@ -38,6 +38,7 @@ module.exports = function(app, passport, db) {
     //Enable jsonp
     app.enable("jsonp callback");
 
+    var secret_key = crypto.randomBytes(8).toString('hex');
     app.configure(function() {
         //cookieParser should be above session
         app.use(express.cookieParser());
@@ -46,15 +47,18 @@ module.exports = function(app, passport, db) {
         app.use(express.bodyParser());
         app.use(express.methodOverride());
 
-        //express/mongo session storage
-        app.use(express.session({
-            secret: crypto.randomBytes(8).toString('hex'),
+        //express/redis session storage
+        app.use(express.cookieSession({
+            secret: secret_key,
             store: new redisStore({
                 host: 'localhost',
                 port: 6379
-            })
+            }),
+            cookie: { 
+                maxAge: 1000 * 60 * 240
+            }
         }));
-
+        
         //connect flash for flash messages
         app.use(flash());
 

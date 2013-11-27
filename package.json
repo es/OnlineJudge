@@ -1,6 +1,6 @@
 {
     "name": "OnlineJudge",
-    "description": "Online Judge in MongoDB, ExpressJS, AngularJS, NodeJS.",
+    "description": "Online Judge in PostgreSQL, ExpressJS, AngularJS, NodeJS.",
     "version": "0.0.1",
     "private": false,
     "contributors": [{
@@ -18,15 +18,16 @@
     },
     "scripts": {
         "start": "node node_modules/grunt-cli/bin/grunt | tee logs/app.log",
-        "test": "node node_modules/grunt-cli/bin/grunt test",
+        "test": "sudo ./dev/SQLCommands/resetDB.sh -c \"test\" && node node_modules/grunt-cli/bin/grunt test",
         "postinstall": "bower install"
     },
     "dependencies": {
         "express": "latest",
         "jade": "latest",
         "async": "latest",
+        "pg": "2.6.x",
+        "orm":"latest",
         "connect-redis": "latest",
-        "mongoose": "latest",
         "connect-flash": "latest",
         "bcrypt": "latest",
         "passport": "latest",
@@ -47,5 +48,6 @@
         "grunt-nodemon": "latest",
         "grunt-concurrent": "latest",
         "grunt-mocha-test": "latest"
-    }
+    },
+    "license" : "MIT"    
 }

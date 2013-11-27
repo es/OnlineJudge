@@ -1,8 +1,6 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-    User = mongoose.model('User');
 
 /**
  * Auth callback
@@ -27,7 +25,7 @@ exports.signin = function(req, res) {
 exports.signup = function(req, res) {
     res.render('users/signup', {
         title: 'Sign up',
-        user: new User()
+        user: new req.models.user()
     });
 };
 
@@ -50,19 +48,19 @@ exports.session = function(req, res) {
  * Create user
  */
 exports.create = function(req, res) {
-    var user = new User(req.body);
-
-    user.provider = 'local';
-    user.save(function(err) {
-        if (err) {
-            return res.render('users/signup', {
-                errors: err.errors,
-                user: user
+    req.models.user.create(req.body, function (error, user) {
+        user.provider = 'local';
+        user.save(function(err) {
+            if (err) {
+                return res.render('users/signup', {
+                    errors: err.errors,
+                    user: user
+                });
+            }
+            req.logIn(user, function(err) {
+                if (err) return next(err);
+                return res.redirect('/');
             });
-        }
-        req.logIn(user, function(err) {
-            if (err) return next(err);
-            return res.redirect('/');
         });
     });
 };
@@ -90,7 +88,7 @@ exports.me = function(req, res) {
  * Find user by id
  */
 exports.user = function(req, res, next, id) {
-    User
+    req.models.user
         .findOne({
             _id: id
         })

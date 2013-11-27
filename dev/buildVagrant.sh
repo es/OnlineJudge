@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 apt-get update
-apt-get install -y nginx vim make g++ git-core 
+apt-get install -y nginx vim make g++ git-core postgresql postgresql-server-dev-9.1
+locale-gen en_CA.UTF-8
 
 # Setting up Node.js
 wget http://nodejs.org/dist/v0.10.21/node-v0.10.21.tar.gz
@@ -18,13 +19,9 @@ cd ..
 apt-get install -y redis-server
 redis-server
 
-# Setup MongoDB
-apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
-echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | tee /etc/apt/sources.list.d/mongodb.list
-apt-get update
-apt-get install mongodb-10gen
-mkdir -p /data/db/
-mongod --config /vagrant/dev/mongodb.conf
+# Setup PostgreSQL
+cd /vagrant/dev/SQLCommands/
+./setupDB.sh -c "dev"
 
 # Setting up nginx
 cp /vagrant/dev/nginxConfig /etc/nginx/sites-enabled/

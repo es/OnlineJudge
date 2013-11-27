@@ -1,5 +1,5 @@
 var shell = ('shelljs'),
-	db = require('mongoose'),
+	db = require('orm'),
 	Teams = db.model('Team'),
 	Langs = db.model('Lang'),
 	Problems = db.model('Problem'),

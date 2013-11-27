@@ -1,5 +1,17 @@
 {
-    "db": "mongodb://localhost/onlinejudge-dev",
+    "db": {
+	  "database" : "onlinejudge_dev",
+	  "protocol" : "postgres",
+	  "host"     : "localhost",
+	  "port"     : 5432,
+	  "user"     : "judge_dev",
+	  "password" : "password",
+	  "query"    : {
+	    "pool"     : false,
+	    "debug"    : false,
+	    "strdates" : false 
+	  }
+	},
     "app": {
         "name": "Online Judge - Development"
     }

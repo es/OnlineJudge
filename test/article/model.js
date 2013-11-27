@@ -2,10 +2,10 @@
  * Module dependencies.
  */
 var should = require('should'),
-    app = require('../../server'),
-    mongoose = require('mongoose'),
-    User = mongoose.model('User'),
-    Article = mongoose.model('Article');
+    app = require('../../server');
+    // mongoose = require('mongoose'),
+    // User = mongoose.model('User'),
+    // Article = mongoose.model('Article');
 
 //Globals
 var user;
