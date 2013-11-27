@@ -1,0 +1,4 @@
+CREATE USER judge_test WITH PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE onlinejudge_test to judge_test;
+ALTER ROLE judge_test CREATEROLE CREATEDB REPLICATION SUPERUSER;
+\q
