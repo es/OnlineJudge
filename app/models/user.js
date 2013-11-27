@@ -37,7 +37,6 @@ module.exports = function (db, callback) {
             },
 
             autoFetch: true,
-
             hooks: {
                 /**
                  * Pre-save hook

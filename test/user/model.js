@@ -2,15 +2,27 @@
  * Module dependencies.
  */
 var should = require('should'),
-    app = require('../../server');
+    app = require('../../server'),
+    config = require('../../config/config'),
+    database = require('../../app/setupDatabase');
     /*mongoose = require('mongoose'),
     User = mongoose.model('User');*/
 
 //Globals
-var user;
+var user, User;
+var db;
 
 //The tests
 describe('<Unit Test>', function() {
+    
+    before(function (done) {
+        database.setup(config.db, function (err, dbPassed) {
+            db = dbPassed;
+            User = db.models.user;
+            done();
+        });
+    });
+
     describe('Model User:', function() {
         before(function(done) {
             user = new User({
@@ -38,11 +50,16 @@ describe('<Unit Test>', function() {
             });
 
             it('should be able to save whithout problems', function(done) {
-                user.save(done);
+                user.save(function(err) {
+                    should.not.exist(err);
+                    done();
+                });
             });
 
             it('should fail to save an existing user again', function(done) {
-                user.save();
+                user.save(function(err) {
+                    should.not.exist(err);
+                });
                 return user2.save(function(err) {
                     should.exist(err);
                     done();
@@ -59,8 +76,10 @@ describe('<Unit Test>', function() {
         });
 
         after(function(done) {
-            User.remove().exec();
-            done();
+            User.find({}).remove(function (err) {
+                if (err) throw err;
+                done();
+            });
         });
     });
 });

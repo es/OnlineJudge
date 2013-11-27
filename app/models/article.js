@@ -14,11 +14,12 @@ var orm = require('orm');
         content: String
     }, {
         autoFetch: true,
+
         /**
          * Validations
          */
         validations: {
-            title: orm.validators.notEmptyString("Title cannot be blank")
+            title: orm.enforce.notEmptyString("Title can't be empty")
         }
     });
     return callback();

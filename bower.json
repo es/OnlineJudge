@@ -2,11 +2,13 @@
     "name": "OnlineJudge",
     "version": "0.0.1",
     "dependencies": {
-        "bootstrap": "2.3.2",
-        "angular": "1.0.6",
+        "bootstrap": "latest",
+        "bootswatch": "latest",
+        "angular": "latest",
+        "angular-ui-router": "latest",
         "angular-resource": "1.0.6",
         "angular-cookies": "1.0.6",
-        "angular-bootstrap": "0.6.0",
+        "angular-bootstrap": "latest",
         "angular-ui-utils": "0.0.4"
     }
 }
