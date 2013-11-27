@@ -19,6 +19,7 @@
     "scripts": {
         "start": "node node_modules/grunt-cli/bin/grunt | tee logs/app.log",
         "test": "sudo ./dev/SQLCommands/resetDB.sh -c \"test\" && node node_modules/grunt-cli/bin/grunt test",
+        "test_travis": "node node_modules/grunt-cli/bin/grunt test",
         "postinstall": "bower install"
     },
     "dependencies": {

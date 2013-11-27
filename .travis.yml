@@ -8,3 +8,5 @@ services:
 
 before_script:
   - psql -c 'create database online_judge_travis;' -U postgres
+
+script: "node run-script test_travis"
