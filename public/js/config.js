@@ -1,5 +1,5 @@
 //Setting up route
-window.app.config(['$routeProvider',
+app.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
         when('/articles', {
@@ -14,6 +14,21 @@ window.app.config(['$routeProvider',
         when('/articles/:articleId', {
             templateUrl: 'views/articles/view.html'
         }).
+        when('/contests', {
+            templateUrl: 'views/contests/index.html'
+        }).
+        when('/contests/leaderboard', {
+            templateUrl: 'views/contests/leaderboard.html'
+        }).
+        when('/contests/register', {
+            templateUrl: 'views/contests/register.html'
+        }).
+        when('/problems', {
+            templateUrl: 'views/problems.html'
+        }).
+        when('/faq', {
+            templateUrl: 'views/faq.html'
+        }).
         when('/', {
             templateUrl: 'views/index.html'
         }).
@@ -24,7 +39,7 @@ window.app.config(['$routeProvider',
 ]);
 
 //Setting HTML5 Location Mode
-window.app.config(['$locationProvider',
+app.config(['$locationProvider',
     function($locationProvider) {
         $locationProvider.hashPrefix("!");
     }
