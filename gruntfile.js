@@ -64,6 +64,10 @@ module.exports = function(grunt) {
         env: {
             test: {
                 NODE_ENV: 'test'
+            },
+
+            travis: {
+                NODE_ENV: 'travis'
             }
         }
     });
@@ -84,4 +88,7 @@ module.exports = function(grunt) {
 
     //Test task.
     grunt.registerTask('test', ['env:test', 'mochaTest']);
+
+    //Test Travis
+    grunt.registerTask('test_travis', ['env:travis', 'mochaTest']);
 };
