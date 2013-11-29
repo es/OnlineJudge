@@ -1,4 +1,4 @@
-window.bootstrap = function() {
+/*window.bootstrap = function() {
     angular.bootstrap(document, ['judge']);
 };
 
@@ -12,4 +12,4 @@ angular.element(document).ready(function() {
 
     //Then init the app
     window.init();
-});
+});*/

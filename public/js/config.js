@@ -29,6 +29,9 @@ app.config(['$routeProvider',
         when('/faq', {
             templateUrl: 'views/faq.html'
         }).
+        when('/signup', {
+            templateUrl: '/views/sign-up.html'
+        }).
         when('/', {
             templateUrl: 'views/index.html'
         }).
@@ -41,6 +44,7 @@ app.config(['$routeProvider',
 //Setting HTML5 Location Mode
 app.config(['$locationProvider',
     function($locationProvider) {
-        $locationProvider.hashPrefix("!");
+        $locationProvider.html5Mode(true);
+        //$locationProvider.hashPrefix("!");
     }
 ]);

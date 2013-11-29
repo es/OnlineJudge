@@ -6,10 +6,27 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#!/">Online Judge</a>
+    <a class="navbar-brand" href="/">Online Judge</a>
   </div>
   <div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
+      <li ng-class="{active: locationEqual('/')}"><a href="/">Home</a></li>
+      <li ng-class="{active: locationEqual('/problems')}"><a href="/problems">Practice Problems</a></li>
+      <li ng-class="{active: locationEqual('/contests', ['', 'leaderboard', 'register'])}" class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contests <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="/contests/">Contest Homepage</a></li>
+          <li><a href="/contests/leaderboard">Leaderboard</a></li>
+          <li><a href="/contests/register">Registration</a></li>
+          <!-- <li class="divider"></li>
+          <li class="dropdown-header">Nav header</li>
+          <li><a href="#">Separated link</a></li>
+          <li><a href="#">One more separated link</a></li> -->
+        </ul>
+      </li>
+      <li ng-class="{active: locationEqual('/faq')}"><a href="/faq">FAQ</a></li>
+    </ul>
+    <!-- <ul class="nav navbar-nav">
       <li ng-class="{active: locationEqual('/')}"><a href="#!/">Home</a></li>
       <li ng-class="{active: locationEqual('/problems')}"><a href="#!/problems">Practice Problems</a></li>
       <li ng-class="{active: locationEqual('/contests', ['', 'leaderboard', 'register'])}" class="dropdown">
@@ -21,11 +38,11 @@
           <!-- <li class="divider"></li>
           <li class="dropdown-header">Nav header</li>
           <li><a href="#">Separated link</a></li>
-          <li><a href="#">One more separated link</a></li> -->
+          <li><a href="#">One more separated link</a></li>
         </ul>
       </li>
       <li ng-class="{active: locationEqual('/faq')}"><a href="#!/faq">FAQ</a></li>
-    </ul>
+    </ul> -->
     <div class="navbar-right navbar-form" role="form" data-ng-hide="global.authenticated">
       <div class="form-group">
         <input type="text" placeholder="Email" class="form-control">
@@ -35,7 +52,7 @@
       </div>
       <button ng-click="" class="btn btn-info">Login</button>
       <!-- <button ng-click="" class="btn btn-info">Sign in</button> -->
-      <a href="signup"><button ng-click="" class="btn btn-success">Sign up</button></a>
+      <a href="/signup"><button ng-click="" class="btn btn-success">Sign up</button></a>
     </div>
     <div class="navbar-right" data-ng-show="global.authenticated">
       <form class="navbar-form" role="form">

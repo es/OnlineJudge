@@ -4,13 +4,12 @@ block content
   .container
     form.form-signin(role='form' action="/users", method="post")
         h2.form-signin-heading Sign up
-        input.form-control(type='text', placeholder='Email address', required='required', autofocus='autofocus')
-        input.form-control(type='text', placeholder='Full Name', required='required')
+        input.form-control(type='text',value=user.email placeholder='Email address', required='required', autofocus='autofocus')
+        input.form-control(type='text', value=user.name placeholder='Full Name', required='required')
 
-        input.form-control(type='text', placeholder='Username', required='required')
+        input.form-control(type='text', value=user.username placeholder='Username', required='required')
         input.form-control(type='password', placeholder='Password', required='required')
         //- label.checkbox
           //-input(type='checkbox', value='remember-me')
           //-| Remember me
         button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign up
-        

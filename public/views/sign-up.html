@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="form-signin" data-ng-controller="SignupController" role="form">
+    <h2 class="form-signin-heading">Sign up</h2>
+    <input type="text" ng-model="user.email" class="form-control" placeholder="Email address" required autofocus>
+    <input type="text" ng-model="user.name" class="form-control" placeholder="Full Name" required>
+    <input type="text" ng-model="user.username" class="form-control" placeholder="Username" required>
+    <input type="password" ng-model="user.password" class="form-control" placeholder="Password" required>
+    <!-- <label class="checkbox">
+      <input type="checkbox" value="remember-me"> Remember me
+    </label> -->
+    <button class="btn btn-lg btn-primary btn-block" data-ng-click="submitUser()"> Sign up</button>
+  </div>
+</div> <!-- /container -->

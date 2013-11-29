@@ -48,7 +48,9 @@ exports.session = function(req, res) {
  * Create user
  */
 exports.create = function(req, res) {
+
     req.models.user.create(req.body, function (error, user) {
+        console.log('req.body:', req.body);
         user.provider = 'local';
         user.save(function(err) {
             if (err) {
