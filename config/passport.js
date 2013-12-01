@@ -29,12 +29,12 @@ module.exports = function(passport, User) {
                 }
                 if (!user) {
                     return done(null, false, {
-                        message: 'Unknown user'
+                        message: "email"
                     });
                 }
                 if (!user.authenticate(password)) {
                     return done(null, false, {
-                        message: 'Invalid password'
+                        message: 'password'
                     });
                 }
                 return done(null, user);

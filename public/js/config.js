@@ -1,8 +1,8 @@
 //Setting up route
-app.config(['$routeProvider',
-    function($routeProvider) {
+app.config(['$routeProvider', function($routeProvider) {
+        console.log("$routeProvider:", $routeProvider);
         $routeProvider.
-        when('/articles', {
+        /*when('/articles', {
             templateUrl: 'views/articles/list.html'
         }).
         when('/articles/create', {
@@ -13,21 +13,24 @@ app.config(['$routeProvider',
         }).
         when('/articles/:articleId', {
             templateUrl: 'views/articles/view.html'
-        }).
-        when('/contests', {
-            templateUrl: 'views/contests/index.html'
-        }).
+        }).*/
+        /*when('/contests/leaderboard', {
+            templateUrl: 'leaderboard.html'
+        }).*/
         when('/contests/leaderboard', {
-            templateUrl: 'views/contests/leaderboard.html'
+            templateUrl: '/views/contests/leaderboard.html'
         }).
         when('/contests/register', {
-            templateUrl: 'views/contests/register.html'
+            templateUrl: '/views/contests/register.html'
+        }).
+        when('/contests', {
+            templateUrl: '/views/contests/index.html'
         }).
         when('/problems', {
-            templateUrl: 'views/problems.html'
+            templateUrl: '/views/problems.html'
         }).
         when('/faq', {
-            templateUrl: 'views/faq.html'
+            templateUrl: '/views/faq.html'
         }).
         when('/signup', {
             templateUrl: '/views/sign-up.html'

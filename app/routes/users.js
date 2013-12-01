@@ -3,17 +3,31 @@
 var users = require('../controllers/users');
 
 module.exports = function (app, passport, auth) {
-    app.get('/signin', users.signin);
-    app.get('/signup', users.signup);
+    /*app.get('/signin', users.signin);
+    app.get('/signup', users.signup);*/
     app.get('/signout', users.signout);
 
     //Setting up the users api
     app.post('/users', users.create);
 
-    app.post('/users/session', passport.authenticate('local', {
-        failureRedirect: '/signin',
-        failureFlash: 'Invalid email or password.'
-    }), users.session);
+    // app.post('/users/session', passport.authenticate('local'), function (req, res, next) {
+    //     res.send();
+    // });
+
+    app.post('/users/session', function(req, res, next) {
+        
+        passport.authenticate('local', function(err, user, info) {
+            if (err) return next(err);
+            
+            if (!user) return res.send(401, info);
+            
+            req.logIn(user, function(err) {
+                if (err) return next(err);
+                delete user.password;
+                return res.send(200, user);
+            });
+        })(req, res, next);
+    });
 
     app.get('/users/me', users.me);
     app.get('/users/:userId', users.show);

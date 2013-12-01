@@ -43,28 +43,34 @@
       </li>
       <li ng-class="{active: locationEqual('/faq')}"><a href="#!/faq">FAQ</a></li>
     </ul> -->
+    
+
+    <!-- Not Authenticated Navbar -->
     <div class="navbar-right navbar-form" role="form" data-ng-hide="global.authenticated">
-      <div class="form-group">
-        <input type="text" placeholder="Email" class="form-control">
+      <div class="form-group" ng-class="{'has-error': loginData.failure.email}">
+        <input type="text" ng-model="loginData.email" placeholder="Email" class="form-control">
       </div>
-      <div class="form-group">
-        <input type="password" placeholder="Password" class="form-control">
+      <div class="form-group" ng-class="{'has-error': loginData.failure.password}">
+        <input type="password" ng-model="loginData.password" placeholder="Password" class="form-control">
       </div>
-      <button ng-click="" class="btn btn-info">Login</button>
-      <!-- <button ng-click="" class="btn btn-info">Sign in</button> -->
+      <button ng-click="login()" class="btn btn-info">Login</button>
       <a href="/signup"><button ng-click="" class="btn btn-success">Sign up</button></a>
     </div>
+
+    <!-- Authenticated Navbar -->
     <div class="navbar-right" data-ng-show="global.authenticated">
-      <form class="navbar-form" role="form">
-        <div class="form-group">
-          <input type="text" placeholder="Email" class="form-control">
-        </div>
-        <div class="form-group">
-          <input type="password" placeholder="Password" class="form-control">
-        </div>
-        <button type="submit" class="btn btn-success">Sign in</button>
-      </form>
-      <button type="submit" class="btn btn-success">Sign up</button>
+      <ul class="nav navbar-nav">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{global.user.username}} <b style="margin-left: 5px" class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="/user/me">Profile</a></li>
+          <li><a ng-href="{{global.user.team.id}}">My Team</a></li>
+          <li><a ng-click="logout()">Signout</a></li>
+        </ul>
+      </li>
+      </ul>
     </div>
+
+
   </div><!--/.navbar-collapse -->
 </div>

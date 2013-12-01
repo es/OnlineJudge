@@ -10,26 +10,6 @@ exports.authCallback = function(req, res, next) {
 };
 
 /**
- * Show login form
- */
-exports.signin = function(req, res) {
-    res.render('users/signin', {
-        title: 'Signin',
-        message: req.flash('error')
-    });
-};
-
-/**
- * Show sign up form
- */
-exports.signup = function(req, res) {
-    res.render('users/signup', {
-        title: 'Sign up',
-        user: new req.models.user()
-    });
-};
-
-/**
  * Logout
  */
 exports.signout = function(req, res) {
@@ -38,20 +18,12 @@ exports.signout = function(req, res) {
 };
 
 /**
- * Session
- */
-exports.session = function(req, res) {
-    res.redirect('/');
-};
-
-/**
  * Create user
  */
 exports.create = function(req, res) {
-
+    req.body.provider = 'local';
     req.models.user.create(req.body, function (error, user) {
-        console.log('req.body:', req.body);
-        user.provider = 'local';
+        if (error) throw error;
         user.save(function(err) {
             if (err) {
                 return res.render('users/signup', {

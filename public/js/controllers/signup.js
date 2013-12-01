@@ -1,17 +1,21 @@
-angular.module('judge.system').controller('SignupController', ['$scope', 'Global', 'userSignup', function ($scope, Global, userSignup) {
+angular.module('judge.system').controller('SignupController', ['$scope', 'Global', 'User', '$location', function ($scope, Global, User, $location) {
 	$scope.global = Global;
-	$scope.user = Global.user;
-	$scope.confirm = 'hello!';
+	
+	
+	//$scope.user = Global.user;
 
 	$scope.submitUser = function () {
 		//check if input is valid
 		console.log("submitted!");
-		userSignup($scope.user).
-		success(function(data,status,headers,config){
-			$location.url('/');
+		User.create($scope.user).
+		success(function(data, status, headers, config){
+			delete $scope.user.password;
+			$location.path('/');
+			Global.authenticated = true;
+			Global.user = $scope.user;
 		}).
-		error(function(data,status,headers,config){
+		error(function(data, status, headers, config){
 			
-		});;
+		});
 	};
 }]);
