@@ -1,6 +1,5 @@
 //Setting up route
 app.config(['$routeProvider', function($routeProvider) {
-        console.log("$routeProvider:", $routeProvider);
         $routeProvider.
         /*when('/articles', {
             templateUrl: 'views/articles/list.html'
@@ -13,9 +12,6 @@ app.config(['$routeProvider', function($routeProvider) {
         }).
         when('/articles/:articleId', {
             templateUrl: 'views/articles/view.html'
-        }).*/
-        /*when('/contests/leaderboard', {
-            templateUrl: 'leaderboard.html'
         }).*/
         when('/contests/leaderboard', {
             templateUrl: '/views/contests/leaderboard.html'

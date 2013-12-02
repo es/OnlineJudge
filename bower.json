@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "dependencies": {
         "bootstrap": "latest",
+        "messenger": "latest",
         "bootswatch": "latest",
         "angular": "latest",
         "angular-ui-router": "latest",

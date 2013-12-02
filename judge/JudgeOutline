@@ -1,0 +1,28 @@
+Step by Step outline of how the judge will work:
+
+1. A submission is recieved from the fronted. A submission consists of the 
+   following:
+
+- Problem ID/Problem
+- Contest ID (if going on)
+- User or Team ID(User if practice problem, Team if contest)
+- Language of Code
+- Solution as a text file
+
+* - Validate all data on client side
+
+
+2. Hit server where it validates all judge data is present and sane (userID + 
+   contestID can't exist together). Then it forwards data to the judge instance (seperate process?).
+   Decrements team submission. Updates team score when judge responds.
+
+
+* - Judge is broken into two parts first part is the job creater second is the worker. Judge is 
+	responsible for only testing code and nothing else. All data passed to judge can be assumed 
+	be valid (so we can throw errors)
+
+3. Part 1 of Judge, job creator, recieves new submission. It gets all the data it needs to 
+   run the submission and turns it into a job and stores it in coffee-resque.
+
+
+4. Part 2 of Judge, worker, takes submission and tests it using docker and what not (establishes a score). Sends response to server to communicate back to frontend.

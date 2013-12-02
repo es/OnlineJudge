@@ -42,7 +42,7 @@ var buildCompileCmd = function (dockerID, compileCmd, codeExtension) {
 }
 
 var buildRunCmd = function (dockerID, runCmd, codeExtension) {
-	return "sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw " + dockerID + " " + runCmd + " Test." + codeExtension;
+	return "sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw " + dockerID + " timout " + timeToRun + "s " + runCmd + " Test." + codeExtension;
 }
 
 /*

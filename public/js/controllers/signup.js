@@ -3,6 +3,12 @@ angular.module('judge.system').controller('SignupController', ['$scope', 'Global
 	
 	
 	//$scope.user = Global.user;
+	$scope.formValidator = function () {
+		Utility.alert.info({
+			message: 'Invalid Email',
+			type: 'error'
+		});
+	};
 
 	$scope.submitUser = function () {
 		//check if input is valid

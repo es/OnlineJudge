@@ -28,6 +28,7 @@
         "async": "latest",
         "pg": "2.6.x",
         "orm":"latest",
+        "coffee-resque":"latest",
         "connect-redis": "latest",
         "connect-flash": "latest",
         "bcrypt": "latest",

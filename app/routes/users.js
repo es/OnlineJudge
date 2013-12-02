@@ -3,19 +3,15 @@
 var users = require('../controllers/users');
 
 module.exports = function (app, passport, auth) {
-    /*app.get('/signin', users.signin);
-    app.get('/signup', users.signup);*/
     app.get('/signout', users.signout);
 
     //Setting up the users api
     app.post('/users', users.create);
 
-    // app.post('/users/session', passport.authenticate('local'), function (req, res, next) {
-    //     res.send();
-    // });
-
-    app.post('/users/session', function(req, res, next) {
-        
+    /*
+     * Should probably move processing into controller
+     */
+    app.post('/users/session', function(req, res, next) {        
         passport.authenticate('local', function(err, user, info) {
             if (err) return next(err);
             

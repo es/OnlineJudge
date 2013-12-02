@@ -1,6 +1,6 @@
-angular.module('judge.system').controller('HeaderController', ['$scope', 'Global', '$location', '$window', 'User', function ($scope, Global, $location, $window, User) {
+angular.module('judge.system').controller('HeaderController', ['$scope', 'Global', '$location', '$window', 'User', 'Utility', function ($scope, Global, $location, $window, User, Utility) {
     $scope.global = Global;
-    console.log('Global:', Global);
+    
     $scope.loginData = {
         email: '',
         password: '',
@@ -11,8 +11,22 @@ angular.module('judge.system').controller('HeaderController', ['$scope', 'Global
     };
 
     $scope.login = function () {
-        if (!$scope.loginData.email || !$scope.loginData.password)
-            alert ("Bad data :(");
+        if (!$scope.loginData.email) {
+            $scope.loginData.failure.email = true;
+            Utility.alert.info({
+                message: 'You did not input an email',
+                type: 'error'
+            });
+        }
+
+
+        if (!$scope.loginData.password) {
+            $scope.loginData.failure.password = true;
+            Utility.alert.info({
+                message: 'You didn\'t a password',
+                type: 'error'
+            });
+        }
 
         $scope.loginData.failure.password = false;
         $scope.loginData.failure.email = false;
@@ -23,10 +37,20 @@ angular.module('judge.system').controller('HeaderController', ['$scope', 'Global
             Global.user = data;
         }).
         error(function(data, status, headers, config){
-            if (data.message === 'email')
+            if (data.message === 'email') {
                 $scope.loginData.failure.email = true;
-            if (data.message === 'password')
+                Utility.alert.info({
+                    message: 'Invalid Email',
+                    type: 'error'
+                });
+            }
+            if (data.message === 'password') {
                 $scope.loginData.failure.password = true;
+                Utility.alert.info({
+                    message: 'Invalid Password',
+                    type: 'error'
+                });
+            }
             Global.authenticated = false;
             Global.user = null;
         });
