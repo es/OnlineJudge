@@ -13,9 +13,11 @@ public class Test {
 		PrintWriter out = new PrintWriter (new FileWriter ("data.out"));
 
 		String temp = in.readLine();
+		int counter = 10;
 		while (temp != null) {
-			out.println(temp);
+			out.println(counter);
 			temp = in.readLine();
+			counter++;
 		}
 		
 		in.close();

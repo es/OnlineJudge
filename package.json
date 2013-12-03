@@ -37,6 +37,7 @@
         "underscore": "latest",
         "view-helpers": "latest",
         "forever": "latest",
+        "shelljs": "latest",
         "bower": "latest",
         "grunt": "latest",
         "grunt-cli": "latest",

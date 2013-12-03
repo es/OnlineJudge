@@ -26,3 +26,12 @@ Step by Step outline of how the judge will work:
 
 
 4. Part 2 of Judge, worker, takes submission and tests it using docker and what not (establishes a score). Sends response to server to communicate back to frontend.
+
+
+Judge Algo: 
+// Adds test case file to test folder
+// Adds solution to test folder
+// Runs build & run commands
+// Checks if output is the same as expected solution
+// Cleans test folder
+// Returns whether or not solution was the same as the predetermined solution

@@ -5,8 +5,6 @@ var should = require('should'),
     app = require('../../server'),
     config = require('../../config/config'),
     database = require('../../app/setupDatabase');
-    /*mongoose = require('mongoose'),
-    User = mongoose.model('User');*/
 
 //Globals
 var user, User;

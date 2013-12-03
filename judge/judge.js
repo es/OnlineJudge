@@ -1,76 +1,107 @@
-var shell = ('shelljs'),
-	db = require('orm'),
-	Teams = db.model('Team'),
-	Langs = db.model('Lang'),
-	Problems = db.model('Problem'),
+var shell = require('shelljs'),
+	async = require('async'),
+	langDB = require('./langDB'),
+	exec = require('child_process').exec,
 	fs = require('fs');
 
+var TEST_FOLDER = '/vagrant/judge/test/';
 
+//Example of what run command should produce
+//sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw test/java7 timout 1s java Test
 
-/*var langSupported = function(lang) {
-	Judge.findOne({'name': lang}, function (err, person) {
+/*
+ * Returns string to build file for lang
+ * Arguments:
+ * dockerID - id of the docker container that runs this lang 
+ * compileCmd - command to compile  
+ * codeExtension - extension of lang 
+ */
+var buildCompileCmd = function (lang) {
+	return "sudo docker run -n=false -w=/usr/judge -t -v=/vagrant/judge/test/:/usr/judge/:rw " + lang.dockerID + " " + lang.compileCmd('Test');
+};
 
-	});
-};*/
-
-var probExists = function (probID, next) {
-	Problems.load(probID, function (err, problem) {
-		if (err) 
-			throw err;
-		else if (problem.length != 0)
-			next(new Error("Invalid problem ID"));
-		else
-			next(null, true);
-	});
-}
-
-var testCode = function (prob, code, lang, callback) {
-	Lang.find({"name": lang}, function (err, language) {
-		shell.mv(code.location, __dirname + "/test" + code.name);
-		shell.cd(__dirname + "/test");
-		if (lang.compiles())
-			shell.exec(lang.compileCmd);
-		shell.exec(lang.run);
-	});
-}
-
-
-//sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw test/java7 java Test
-
-var buildCompileCmd = function (dockerID, compileCmd, codeExtension) {
-	return "sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw " + dockerID + " " + compileCmd + " Test." + codeExtension;
-}
-
-var buildRunCmd = function (dockerID, runCmd, codeExtension) {
-	return "sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw " + dockerID + " timout " + timeToRun + "s " + runCmd + " Test." + codeExtension;
-}
+/*
+ * Arguments:
+ * dockerID - id of the docker container that runs this lang 
+ * compileCmd - command to compile  
+ * codeExtension - extension of lang 
+ */
+var buildRunCmd = function (lang) {
+	return "sudo docker run -n=false -w=/usr/judge -t -v=/vagrant/judge/test/:/usr/judge/:rw " + lang.dockerID + " timeout " + lang.timeout + "s " + lang.runCmd('Test');
+};
 
 /*
 Arguements: 
-	teamID - id to identify team
 	prob - problem name
-	code - potential solution for problem uploaded by team
+	solution - path to solution for problem uploaded by team
 	lang - language in which the potential solution is coded
 	callback - callback to call when finished testing code
 */
-module.exports.test = function (team, prob, code, lang, next) {
-		async.waterfall([
-		    function(callback){
-		        teamExists(team, callback);
-		    },
-		    function(err, callback){
-		        if (err) throw err;
-		        probExists(prob, callback);
-		    },
-		    function(err, callback){
-		        if (err) throw err;
-		        langSupported(lang, );
-		    }
-		], function (err, result) {
-			if (err) throw err;
-			else
-				testCode(team, prob, code, lang, next);
+module.exports.test = function (prob, solution, lang, callback) {
+	lang = langDB[lang];
+	async.waterfall([function (next) {
+		// Adds solution to test folder
+		fs.readFile(solution, function (err, fileStream) {
+			var path = TEST_FOLDER + 'Test.' + lang.extension;
+			fs.writeFile(path, fileStream, next);
 		});
-	}
-};
+	},
+	function (next) {
+		// Adds test case file to test folder
+		fs.readFile(prob.testCase.path, function (err, fileStream) {
+			var path = TEST_FOLDER + prob.testCase.fileName;
+			fs.writeFile(path, fileStream, next);
+		});
+	},
+	function (next) {
+		// Run build commands
+		shell.cd(TEST_FOLDER);
+		if (lang.compiles) {
+			shell.exec(buildCompileCmd(lang), function(code, output) {
+				next(null);
+			});
+		}
+		else
+			next (null);
+		
+	},
+	function (next) {
+		// Run execution commands
+		shell.exec(buildRunCmd(lang), function(code, output) {
+			next(null);
+		});
 
+	},
+	function (next) {
+		// Checks if output exists/created
+		// Checks if output is the same as expected solution
+		try {
+			var realSolution = fs.readFileSync(prob.solution).toString();
+			var output = fs.readFileSync(TEST_FOLDER + 'data.out').toString();
+			if (realSolution === output)
+				next(null, 'GOOD_ANSWER', true);
+			else 
+				next(null, 'BAD_ANSWER', false);
+		}
+		catch (exception) {
+			next(null, 'OUTPUT_FILE_ISSUE', false);
+		}
+	},
+	function (issue, result, next) {
+		// Cleans test folder
+		fs.readdir(TEST_FOLDER, function (err, files) {
+			async.each(files, fs.unlink, function (error) {
+				if (error) throw error;
+				next(null, issue, result);
+			});
+		});
+	}], function (err, issue, isSolutionCorrect) {
+		// Returns whether or not solution was the same as the predetermined solution
+		if (err) throw err;
+		var resultObj = {
+			result: isSolutionCorrect,
+			reason: issue
+		};
+		callback(resultObj);
+	});
+};
