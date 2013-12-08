@@ -1,7 +1,6 @@
 angular.module('judge.system').controller('SignupController', ['$scope', 'Global', 'User', '$location', function ($scope, Global, User, $location) {
 	$scope.global = Global;
-	
-	
+
 	//$scope.user = Global.user;
 	$scope.formValidator = function () {
 		Utility.alert.info({

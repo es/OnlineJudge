@@ -14,7 +14,7 @@ angular.module('judge.system').controller('HeaderController', ['$scope', 'Global
         if (!$scope.loginData.email) {
             $scope.loginData.failure.email = true;
             Utility.alert.info({
-                message: 'You did not input an email',
+                message: 'You didn\'t input an email',
                 type: 'error'
             });
         }
@@ -23,7 +23,7 @@ angular.module('judge.system').controller('HeaderController', ['$scope', 'Global
         if (!$scope.loginData.password) {
             $scope.loginData.failure.password = true;
             Utility.alert.info({
-                message: 'You didn\'t a password',
+                message: 'You didn\'t enter a password',
                 type: 'error'
             });
         }
@@ -33,6 +33,10 @@ angular.module('judge.system').controller('HeaderController', ['$scope', 'Global
 
         User.login($scope.loginData).
         success(function(data, status, headers, config){
+            Utility.alert.info({
+                message: 'Welcome to the real world.',
+                type: 'success'
+            });
             Global.authenticated = true;
             Global.user = data;
         }).
@@ -40,14 +44,14 @@ angular.module('judge.system').controller('HeaderController', ['$scope', 'Global
             if (data.message === 'email') {
                 $scope.loginData.failure.email = true;
                 Utility.alert.info({
-                    message: 'Invalid Email',
+                    message: 'Account with that email doesn\'t exist',
                     type: 'error'
                 });
             }
             if (data.message === 'password') {
                 $scope.loginData.failure.password = true;
                 Utility.alert.info({
-                    message: 'Invalid Password',
+                    message: 'Thou shall not pass! (Incorrect Password)',
                     type: 'error'
                 });
             }

@@ -11,20 +11,28 @@
   <div class="navbar-collapse collapse">
     <ul class="nav navbar-nav">
       <li ng-class="{active: locationEqual('/')}"><a href="/">Home</a></li>
-      <li ng-class="{active: locationEqual('/problems')}"><a href="/problems">Practice Problems</a></li>
-      <li ng-class="{active: locationEqual('/contests', ['', 'leaderboard', 'register'])}" class="dropdown">
+      <!-- <li ng-class="{active: locationEqual('/problems')}"><a href="/problems">Practice Problems</a></li> -->
+      <li ng-class="{active: locationEqual('/problems', ['', 'leaderboard', 'create', 'submit'])}" class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Problems <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="/problems/submit">Submit Solution</a></li>
+          <li><a href="/problems/">Practice Problems</a></li>
+          <li><a href="/problems/leaderboard">Offline Leaderboard</a></li>
+          <li class="divider"></li>
+          <li><a href="/problems/create">Submit a New Problem</a></li>
+        </ul>
+      </li>
+      <!-- Not ready to implement contests, first comes problems -->
+      <!-- <li ng-class="{active: locationEqual('/contests', ['', 'leaderboard', 'register'])}" class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contests <b class="caret"></b></a>
         <ul class="dropdown-menu">
           <li><a href="/contests/">Contest Homepage</a></li>
           <li><a href="/contests/leaderboard">Leaderboard</a></li>
+          <li class="divider"></li>
           <li><a href="/contests/register">Registration</a></li>
-          <!-- <li class="divider"></li>
-          <li class="dropdown-header">Nav header</li>
-          <li><a href="#">Separated link</a></li>
-          <li><a href="#">One more separated link</a></li> -->
         </ul>
-      </li>
-      <li ng-class="{active: locationEqual('/faq')}"><a href="/faq">FAQ</a></li>
+      </li> -->
+      <li ng-class="{active: locationEqual('/help')}"><a href="/help">Help</a></li>
     </ul>
 
     <!-- Not Authenticated Navbar -->

@@ -1,6 +1,7 @@
 //User Routes
 
-var users = require('../controllers/users');
+var users = require('../controllers/users'),
+    async = require('async');
 
 module.exports = function (app, passport, auth) {
     app.get('/signout', users.signout);
@@ -19,14 +20,15 @@ module.exports = function (app, passport, auth) {
             
             req.logIn(user, function(err) {
                 if (err) return next(err);
-                delete user.password;
+                user.password = null;
                 return res.send(200, user);
             });
         })(req, res, next);
     });
 
-    app.get('/users/me', users.me);
-    app.get('/users/:userId', users.show);
+    app.get('/users/:showUserWithID', users.show);
+    /*app.get('/users', users.all);*/
+    /*app.get('/users/me', users.me);*/
 
     //Finish with setting up the userId param
     app.param('userId', users.user);

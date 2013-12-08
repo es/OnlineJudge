@@ -17,8 +17,8 @@ module.exports = function (db, callback) {
 		});
 
 		Problem.create([
-		    {
-		        name: 'Pratice Problem',
+			{
+				name: 'Pratice Problem',
 				author: "Fluttershy",
 				pdf: '/vagrant/judge/problems/PracticeProblem/PracticeProblem.pdf',
 				problemStatement: "Output the numbers in the input file.",
@@ -27,7 +27,7 @@ module.exports = function (db, callback) {
 					fileName: 'data.in'
 				},
 				solution: '/vagrant/judge/problems/PracticeProblem/data.out'
-		    }
+			}
 		], function (err, items) {
 			return callback();
 		});

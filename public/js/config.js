@@ -13,7 +13,9 @@ app.config(['$routeProvider', function($routeProvider) {
         when('/articles/:articleId', {
             templateUrl: 'views/articles/view.html'
         }).*/
-        when('/contests/leaderboard', {
+        
+        // Not ready to implement contests, first comes problems
+        /*when('/contests/leaderboard', {
             templateUrl: '/views/contests/leaderboard.html'
         }).
         when('/contests/register', {
@@ -21,12 +23,18 @@ app.config(['$routeProvider', function($routeProvider) {
         }).
         when('/contests', {
             templateUrl: '/views/contests/index.html'
+        }).*/
+        when('/problems/leaderboard', {
+            templateUrl: '/views/problems/leaderboard.html'
+        }).
+        when('/problems/create', {
+            templateUrl: '/views/problems/create.html'
         }).
         when('/problems', {
-            templateUrl: '/views/problems.html'
+            templateUrl: '/views/problems/problems.html'
         }).
-        when('/faq', {
-            templateUrl: '/views/faq.html'
+        when('/help', {
+            templateUrl: '/views/help.html'
         }).
         when('/signup', {
             templateUrl: '/views/sign-up.html'

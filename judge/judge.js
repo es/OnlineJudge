@@ -7,7 +7,7 @@ var shell = require('shelljs'),
 var TEST_FOLDER = '/vagrant/judge/test/';
 
 //Example of what run command should produce
-//sudo docker run -n=false -w=/usr/judge -i -t -v=/vagrant/judge/test/:/usr/judge/:rw test/java7 timout 1s java Test
+//sudo docker run -n=false -w=/usr/judge -t -v=/vagrant/judge/test/:/usr/judge/:rw test/java7 timout 1s java Test
 
 /*
  * Returns string to build file for lang
@@ -32,7 +32,7 @@ var buildRunCmd = function (lang) {
 
 /*
 Arguements: 
-	prob - problem name
+	prob - problem object
 	solution - path to solution for problem uploaded by team
 	lang - language in which the potential solution is coded
 	callback - callback to call when finished testing code

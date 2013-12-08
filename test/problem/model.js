@@ -23,22 +23,20 @@ describe('<Unit Test>', function() {
 
     describe('Model User:', function() {
         before(function(done) {
-            User.find({}).remove(function (err) {
-                user = new User({
-                    name: 'Full name',
-                    email: 'test@test.com',
-                    username: 'user',
-                    password: 'password'
-                });
-                user2 = new User({
-                    name: 'Full name',
-                    email: 'test@test.com',
-                    username: 'user',
-                    password: 'password'
-                });
-
-                done();
+            user = new User({
+                name: 'Full name',
+                email: 'test@test.com',
+                username: 'user',
+                password: 'password'
             });
+            user2 = new User({
+                name: 'Full name',
+                email: 'test@test.com',
+                username: 'user',
+                password: 'password'
+            });
+
+            done();
         });
 
         describe('Method Save', function() {
@@ -70,32 +68,6 @@ describe('<Unit Test>', function() {
                 user.name = '';
                 return user.save(function(err) {
                     should.exist(err);
-                    done();
-                });
-            });
-        });
-
-        describe('Model get:', function() {
-            it('should error when given a non-integer', function(done) {
-                User.get(3.14, function(err, user) {
-                    should.exist(err);
-                    should.not.exist(user);
-                });
-
-                return User.get('WellTheresYourProblem', function(err, user) {
-                    should.exist(err);
-                    should.not.exist(user);
-                    done();
-                });
-            });
-
-            it('should return user with id being order created', function(done) {
-                
-                //id 5 even though it should be 0; opened issue with node-orm2
-                return User.get(5, function(err, user) {
-                    should.not.exist(err);
-                    should.exist(user);
-                    user.should.equal(user);
                     done();
                 });
             });

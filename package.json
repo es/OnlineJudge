@@ -35,6 +35,7 @@
         "passport": "latest",
         "passport-local": "latest",
         "underscore": "latest",
+        "underscore.string": "latest",
         "view-helpers": "latest",
         "forever": "latest",
         "shelljs": "latest",

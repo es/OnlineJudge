@@ -9,5 +9,5 @@ else
 	cd /vagrant/dev/SQLCommands/development/
 fi
 
-sudo -u postgres psql --dbname=postgres -a -f makeDB.sql
-sudo -u postgres psql --dbname=template1 -a -f makeUSER.sql
+sudo -u postgres psql --dbname=postgres -f makeDB.sql
+sudo -u postgres psql --dbname=template1 -f makeUSER.sql

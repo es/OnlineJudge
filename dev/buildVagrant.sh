@@ -30,6 +30,7 @@ service nginx restart
 # Install dependencies
 cd /vagrant
 npm install
+bower install
 
 # Install AUFS filesystem support
 cd ~/
